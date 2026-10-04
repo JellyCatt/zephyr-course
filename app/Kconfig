@@ -2,5 +2,9 @@ config APP_HEARTBEAT_PERIOD_MS
   int "APP_HEARTBEAT_PERIOD_MS"
     default 500
     range 100 2000
+config BLINK_SLEEP_TIME_MS
+  int "BLINK_SLEEP_TIME_MS"
+    default 500
+    range 100 2000
 
 source "Kconfig.zephyr"

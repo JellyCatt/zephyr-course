@@ -1,0 +1,6 @@
+board:
+  name: our_board
+  full_name: Very Our Board
+  vendor: jellycat
+  socs:
+  - name: rp2350a

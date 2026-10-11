@@ -1,0 +1,6 @@
+board:
+  name: my_scratch_board
+  full_name: My Scratch Board
+  vendor: jellycat
+  socs:
+  - name: rp2350a

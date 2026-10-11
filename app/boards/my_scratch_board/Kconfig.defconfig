@@ -1,0 +1,6 @@
+if BOARD_MY_SCRATCH_BOARD
+
+config USB_SELF_POWERED
+	default n
+
+endif # BOARD_MY_SCRATCH_BOARD

@@ -1,0 +1,105 @@
+/dts-v1/;
+
+#include <zephyr/dt-bindings/pinctrl/rpi-pico-rp2350a-pinctrl.h>
+
+#include <raspberrypi/rpi_pico/rp2350a.dtsi>
+#include <raspberrypi/rpi_pico/m33.dtsi>
+
+/ {
+	model = "My Scratch Board";
+	compatible = "jellycat,my_scratch_board";
+
+	aliases {
+		led0 = &led0;
+		the-led = &led0;
+	};
+
+	chosen {
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+		zephyr,console = &cdc_acm_uart0;
+		zephyr,shell-uart = &cdc_acm_uart0;
+		zephyr,code-partition = &code_partition;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		led0: led_0 {
+			gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
+			label = "LED";
+		};
+	};
+	uart-bridge0 {
+		compatible = "zephyr,uart-bridge";
+		peers = <&cdc_acm_uart0 &uart0>;
+	};
+
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&flash0 {
+	reg = <0x10000000 DT_SIZE_M(4)>;
+
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		/* Reserved memory for an image definition block. The block is much
+		 * smaller than 256 bytes, but in practice the linker places the vector
+		 * table at a much larger alignment offset.
+		 */
+		image_def: partition@0 {
+			label = "image_def";
+			reg = <0x00000000 0x100>;
+			read-only;
+		};
+
+		/*
+		 * Usable flash. Starts at 0x100, after the image definition block.
+		 * The partition size is 4MB minus the 0x100 bytes taken by the
+		 * image definition.
+		 */
+		code_partition: partition@100 {
+			label = "code-partition";
+			reg = <0x100 (DT_SIZE_M(4) - 0x100)>;
+			read-only;
+		};
+	};
+};
+
+&pinctrl {
+	uart0_default: uart0_default {
+		group1 {
+			pinmux = <UART0_TX_P0>;
+		};
+		group2 {
+			pinmux = <UART0_RX_P1>;
+			input-enable;
+		};
+	};
+};
+
+&uart0 {
+	current-speed = <115200>;
+	status = "okay";
+	pinctrl-0 = <&uart0_default>;
+	pinctrl-names = "default";
+};
+
+&usbd {
+	status = "okay";
+
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+		label = "Zephyr USB CDC-ACM uart0";
+	};
+
+	cdc_acm_uart1: cdc_acm_uart1 {
+		compatible = "zephyr,cdc-acm-uart";
+		label = "Zephyr USB CDC-ACM uart1";
+	};
+};

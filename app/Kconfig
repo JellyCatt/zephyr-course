@@ -8,3 +8,4 @@ config BLINK_SLEEP_TIME_MS
     range 100 2000
 
 source "Kconfig.zephyr"
+rsource "drivers/our_driver/Kconfig"

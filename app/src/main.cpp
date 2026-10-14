@@ -43,6 +43,7 @@ int main(void)
         k_msleep(CONFIG_BLINK_SLEEP_TIME_MS);
         sensor_sample_fetch(driver);
         k_msleep(CONFIG_BLINK_SLEEP_TIME_MS);
+        sensor_attr_set(driver, SENSOR_CHAN_AMBIENT_TEMP, SENSOR_ATTR_COMMON_COUNT, &val);
     }
     return 0;
 }

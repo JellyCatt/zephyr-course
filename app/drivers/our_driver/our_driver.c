@@ -2,6 +2,8 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/logging/log.h>
 
+#include "our_driver/our_driver.h"
+
 #define DT_DRV_COMPAT our_driver
 
 
@@ -9,10 +11,6 @@
 static const struct gpio_dt_spec dummy_led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
 LOG_MODULE_REGISTER(our_driver, LOG_LEVEL_INF);
-
-struct dummy_sensor_data {
-  uint32_t total_blink_cycles;
-};
 
 static struct dummy_sensor_data dummy_sensor_data_instance;
 
@@ -60,3 +58,22 @@ static int init(const struct device* dev) {
 }
 
 DEVICE_DT_INST_DEFINE(0, init, NULL, &dummy_sensor_data_instance, NULL, POST_KERNEL, 80, &api_iomico_lecture);
+
+
+
+// Customized extended API
+int custom_driver_reset(const struct device *dev) {
+  LOG_INF("custom_driver_reset is called");
+  if (dev == NULL) {
+    LOG_ERR("dev is NULL!");
+    return -ENXIO;
+  }
+  struct dummy_sensor_data *sensor_data = dev->data;
+  if (sensor_data == NULL) {
+    LOG_ERR("sensor_data is NULL!");
+    return -ENXIO;
+  }
+  sensor_data->total_blink_cycles = 0;
+  LOG_INF("custom_driver_reset successfully!");
+  return 0;
+}

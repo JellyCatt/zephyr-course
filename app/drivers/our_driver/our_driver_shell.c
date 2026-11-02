@@ -11,9 +11,9 @@ static int cmd_fetch_handler(const struct shell* sh, int argc, char** argv) {
 }
 
 static int cmd_read_handler(const struct shell* sh, int argc, char** argv) {
-  shell_print(sh, "cmd_read_handler");
   struct sensor_value val;
-  sensor_channel_get(driver, SENSOR_CHAN_AMBIENT_TEMP, &val);
+  int ret = sensor_channel_get(driver, SENSOR_CHAN_AMBIENT_TEMP, &val);
+  shell_print(sh, "cmd_read_handler return val = %d", ret);
   return 0;
 }
 

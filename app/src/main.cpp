@@ -2,6 +2,7 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/drivers/sensor.h>
+#include <our_driver/our_driver.h>
 
 /* The devicetree node identifier for the "led0" alias. */
 // #define LED_NODE DT_ALIAS(led0)
@@ -34,6 +35,7 @@ int main(void)
         return 0;
     }
     struct sensor_value val;
+    custom_driver_reset(driver);
     while (1) {
         // if (gpio_pin_toggle_dt(&led) < 0) return 0;
         

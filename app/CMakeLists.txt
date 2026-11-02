@@ -6,5 +6,7 @@ list(APPEND BOARD_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 find_package(Zephyr REQUIRED)
 project(my_zephyr_app)
 
-target_sources(app PRIVATE src/main.cpp)
+zephyr_include_directories(include)
+
 add_subdirectory(drivers/our_driver)
+target_sources(app PRIVATE src/main.cpp)

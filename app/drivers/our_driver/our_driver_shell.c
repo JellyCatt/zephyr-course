@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <zephyr/shell/shell.h>
 #include <zephyr/drivers/sensor.h>
+#include <our_driver/our_driver.h>
 
 const struct device* driver = DEVICE_DT_GET(DT_NODELABEL(our_driver0));
 
@@ -44,10 +45,10 @@ static int cmd_set_handler(const struct shell* sh, int argc, char** argv) {
     shell_error(sh, "Argument value out of range");
     return -EINVAL;
   }
-  shell_print(sh, "Calling sensor_attr_set");
+  shell_print(sh, "Calling custom_driver_reset");
   struct sensor_value val;
   val.val1 = value; //just for dummy, we don't do anything with the value in sensor_attr_set anyway
-  sensor_attr_set(driver, SENSOR_CHAN_AMBIENT_TEMP, SENSOR_ATTR_COMMON_COUNT, &val);
+  custom_driver_reset(driver);
   return 0;
 }
 
